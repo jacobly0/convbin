@@ -29,9 +29,6 @@ endif
 ifdef STRIP
   STRIP = @(STRIP)
 endif
-ifneq ($(STRIP),)
-  UNSTRIPPED = _unstripped
-endif
 
 LD = $(CC)
 ifdef LD
@@ -44,13 +41,15 @@ ifneq (@(LTO),n)
   LDFLAGS += -flto
 endif
 
-SOURCES = src/*.c \
-          src/asm/*.c \
-          src/deps/zx7/compress.c \
-          src/deps/zx7/optimize.c
+SOURCES += src/*.c
+SOURCES += src/asm/*.c
+SOURCES += src/deps/zx/zx7/*.c
+SOURCES += src/deps/zx/zx0/*.c
 
-: foreach $(SOURCES) |> ^ CC %o^ $(CC) -c $(CFLAGS) %f -o %o |> %f.o {obj}
-: {obj} |> ^ LD %o^ $(LD) %f -o %o |> convbin$(UNSTRIPPED)$(EXE)
-ifneq ($(STRIP),)
-  : *_unstripped$(EXE) |> $(STRIP) %f -o %o |> %g$(EXE)
+: foreach src/*.c src/asm/*.c src/deps/zx/zx7/*.c src/deps/zx/zx0/*.c |> ^ CC %o^ $(CC) -c $(CFLAGS) %f -o %o |> %f.o {OBJ}
+ifeq ($(STRIP),)
+  : {OBJ} |> ^ LD %o^ $(LD) %f -o %o |> convbin$(EXE)
+else
+  : {OBJ} |> ^t LD %o^ $(LD) %f -o %o |> convbin_unstripped$(EXE)
+  : *_unstripped$(EXE) |> ^ STRIP %o^ $(STRIP) %f -o %o |> %g$(EXE)
 endif
