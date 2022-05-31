@@ -163,7 +163,7 @@ static int convert_build_8x(uint8_t *data, size_t size, struct output_file *file
 
 static int convert_8x(struct input *input, struct output_file *file)
 {
-    uint8_t data[INPUT_MAX_SIZE];
+    static uint8_t data[INPUT_MAX_SIZE];
     size_t size;
     int ret;
 
@@ -181,7 +181,7 @@ static int convert_8x(struct input *input, struct output_file *file)
 
 static int convert_8xp(struct input *input, struct output_file *file)
 {
-    uint8_t data[INPUT_MAX_SIZE];
+    static uint8_t data[INPUT_MAX_SIZE];
     size_t size;
     int ret;
 
@@ -322,7 +322,7 @@ static int convert_8xp(struct input *input, struct output_file *file)
 
 int convert_auto_8xg(struct input *input, struct output_file *file)
 {
-    uint8_t data[INPUT_MAX_SIZE];
+    static uint8_t data[INPUT_MAX_SIZE];
     uint8_t *ti8x;
     uint16_t checksum;
     size_t file_size;

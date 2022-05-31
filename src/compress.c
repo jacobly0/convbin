@@ -224,8 +224,8 @@ static void compress_write_word(uint8_t *addr, unsigned int value)
 
 int compress_auto_8xp(uint8_t *data, size_t *size, compression_t mode)
 {
-    uint8_t new_data[INPUT_MAX_SIZE];
-    uint8_t compressed_data[INPUT_MAX_SIZE];
+    static uint8_t new_data[INPUT_MAX_SIZE];
+    static uint8_t compressed_data[INPUT_MAX_SIZE];
     unsigned int offset;
     size_t prgm_size;
     size_t uncompressed_size;

@@ -48,8 +48,8 @@ SOURCES += src/deps/zx/zx0/*.c
 
 : foreach src/*.c src/asm/*.c src/deps/zx/zx7/*.c src/deps/zx/zx0/*.c |> ^ CC %o^ $(CC) -c $(CFLAGS) %f -o %o |> %f.o {OBJ}
 ifeq ($(STRIP),)
-  : {OBJ} |> ^ LD %o^ $(LD) %f -o %o |> convbin$(EXE)
+  : {OBJ} |> ^ LD %o^ $(LD) $(LDFLAGS) %f -o %o |> convbin$(EXE)
 else
-  : {OBJ} |> ^t LD %o^ $(LD) %f -o %o |> convbin_unstripped$(EXE)
+  : {OBJ} |> ^t LD %o^ $(LD) $(LDFLAGS) %f -o %o |> convbin_unstripped$(EXE)
   : *_unstripped$(EXE) |> ^ STRIP %o^ $(STRIP) %f -o %o |> %g$(EXE)
 endif
